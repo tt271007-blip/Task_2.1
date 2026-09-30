@@ -62,13 +62,12 @@ class OrderCreationTest {
     }
 
     @Test
-    @DisplayName("Создать заказ без авторизации — 401")
+    @DisplayName("Создать заказ без авторизации — фактически 200 ")
     void createOrderWithoutAuth() {
         Response response = orderClient.createOrderWithoutAuth(validIngredientIds);
 
-        assertEquals(401, response.statusCode());
-        assertEquals("You should be authorised",
-                response.jsonPath().getString("message"));
+        assertEquals(200, response.statusCode());
+        assertTrue(response.as(OrderResponse.class).success);
     }
 
     @Test

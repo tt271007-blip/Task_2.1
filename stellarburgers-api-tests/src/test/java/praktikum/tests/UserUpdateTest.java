@@ -43,8 +43,11 @@ class UserUpdateTest {
     @Test
     @DisplayName("Изменить email с авторизацией")
     void updateEmailWithAuth() {
-        User update = new User();
-        update.email = "new_" + System.currentTimeMillis() + "@yandex.ru";
+        User update = new User(
+                "new_" + System.currentTimeMillis() + "@yandex.ru",
+                user.password,
+                user.name
+        );
 
         Response response = userClient.updateUser(accessToken, update);
 
@@ -57,8 +60,11 @@ class UserUpdateTest {
     @Test
     @DisplayName("Изменить name с авторизацией")
     void updateNameWithAuth() {
-        User update = new User();
-        update.name = "NewName_" + System.currentTimeMillis();
+        User update = new User(
+                user.email,
+                user.password,
+                "NewName_" + System.currentTimeMillis()
+        );
 
         Response response = userClient.updateUser(accessToken, update);
 
@@ -71,8 +77,11 @@ class UserUpdateTest {
     @Test
     @DisplayName("Изменить password с авторизацией")
     void updatePasswordWithAuth() {
-        User update = new User();
-        update.password = "newPassword_" + System.currentTimeMillis();
+        User update = new User(
+                user.email,
+                "newPassword_" + System.currentTimeMillis(),
+                user.name
+        );
 
         Response response = userClient.updateUser(accessToken, update);
 
@@ -83,8 +92,7 @@ class UserUpdateTest {
     @Test
     @DisplayName("Изменить данные без авторизации — ошибка 401")
     void updateWithoutAuth() {
-        User update = new User();
-        update.name = "ShouldNotUpdate";
+        User update = new User(user.email, user.password, "ShouldNotUpdate");
 
         Response response = userClient.updateUserWithoutAuth(update);
 
